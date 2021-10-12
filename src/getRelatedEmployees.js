@@ -14,9 +14,10 @@ function getRelatedEmployees(managerId) {
   // seu código aqui
   const team = employees.filter((manager) => manager.managers.some((id) => id === managerId));
   const result = team.map((employee) => `${employee.firstName} ${employee.lastName}`);
+  if (result.length === 0) {
+    throw new Error('O id inserido não é de uma pessoa colaboradora gerente!');
+  }
   return result;
 }
 
 module.exports = { isManager, getRelatedEmployees };
-
-console.log(getRelatedEmployees('9e7d4524-363c-416a-8759-8aa7e50c0992'));
