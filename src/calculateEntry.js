@@ -17,13 +17,10 @@ function countEntrants(entrants) {
 
 function calculateEntry(entrants) {
   // seu código aqui
-  if (!entrants) {
-    return 0;
-  }
+  if (!entrants || (typeof entrants === 'object' && Object.keys(entrants).length === 0)
+  ) return 0;
 }
 
 module.exports = { calculateEntry, countEntrants };
 
-// console.log(
-//   countEntrants(),
-// );
+console.log(calculateEntry({}));
