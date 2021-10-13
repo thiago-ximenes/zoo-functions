@@ -19,8 +19,8 @@ function calculateEntry(entrants) {
   // seu código aqui
   if (!entrants || (typeof entrants === 'object' && Object.keys(entrants).length === 0)
   ) return 0;
-  let sumBilling = 0;
-  if (entrant.age < 18) 
+  // let sumBilling = 0;
+  // if (entrant.age < 18) 
 }
 
 module.exports = { calculateEntry, countEntrants };
