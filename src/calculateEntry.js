@@ -19,8 +19,11 @@ function calculateEntry(entrants) {
   // seu código aqui
   if (!entrants || (typeof entrants === 'object' && Object.keys(entrants).length === 0)
   ) return 0;
+  let sumBilling = 0;
+  if (entrant.age < 18) 
 }
 
 module.exports = { calculateEntry, countEntrants };
 
+//adult = 49.99 senior 24.99 child 20.99
 console.log(calculateEntry({}));

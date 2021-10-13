@@ -1,7 +1,6 @@
 const data = require('../data/zoo_data');
 
 const { employees } = data;
-const { firstName, lastName } = employees;
 
 function isManager(id) {
   // seu código aqui
