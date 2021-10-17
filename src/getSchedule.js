@@ -46,7 +46,9 @@ const schedule = {
 function getSchedule(scheduleTarget) {
   if (scheduleTarget === 'Monday') return { Monday: mondayClosed };
   if (Object.keys(hours).includes(scheduleTarget)) return schedule.withDayParameter(scheduleTarget);
-  if (species.find((specie) => specie.name === scheduleTarget)) return schedule.animalExhibition(scheduleTarget);
+  if (species.find((specie) => specie.name === scheduleTarget)) {
+    return schedule.animalExhibition(scheduleTarget);
+  }
   return schedule.allDayAndAnimalsScheduled();
 }
 
