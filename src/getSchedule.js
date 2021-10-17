@@ -32,14 +32,20 @@ const schedule = {
     }, {});
     return result;
   },
+  withDayParameter: (day) => {
+    const allDaysSchedule = schedule.withoutParams();
+    return { [day]: allDaysSchedule[day] };
+  },
 };
 
 function getSchedule(scheduleTarget) {
   if (!Object.keys(hours).includes(scheduleTarget)) return schedule.withoutParams();
-  if (!species.name.includes(scheduleTarget)) return schedule.withoutParams();
+  if (species.some((specie) => scheduleTarget === specie.name)) return schedule.withoutParams();
   if (!scheduleTarget) return schedule.withoutParams();
+  if (scheduleTarget === 'Monday') return { Monday: mondayClosed };
+  if (Object.keys(hours).includes(scheduleTarget)) return schedule.withDayParameter(scheduleTarget);
 }
 
 module.exports = getSchedule;
 
-// console.log(scheduleTarget.withoutParams());
+// console.log(schedule.withDayParameter('Tuesday'));
