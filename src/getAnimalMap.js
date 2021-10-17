@@ -28,13 +28,14 @@ const getResidentsBySpecie = (animalPerLocation, animalName, option) => {
   return resident.residents.map((residentName) => residentName.name);
 };
 
-const getAnimalByName = (option = false) => {
+const getAnimalByName = (optionSex = false, sorted = false) => {
   const justLocation = getJustLocation();
   const animalByName = justLocation.reduce((accumulator, location) => {
     const animalPerLocation = getLocation(location);
     const name = getAnimalName(animalPerLocation);
     const animalNames = name.map((animalName) => {
-      const residentsBySpecie = getResidentsBySpecie(animalPerLocation, animalName, option);
+      const residentsBySpecie = getResidentsBySpecie(animalPerLocation, animalName, optionSex);
+      if (sorted) residentsBySpecie.sort();
       return { [animalName]: residentsBySpecie };
     });
     accumulator[location] = animalNames;
@@ -44,7 +45,7 @@ const getAnimalByName = (option = false) => {
 };
 
 const animalMap = {
-  includeNames: () => getAnimalByName(),
+  includeNames: (optionSex, sorted) => getAnimalByName(optionSex, sorted),
   noOptions: () => {
     const justLocation = getJustLocation();
     const animalByName = justLocation.reduce((accumulator, location) => {
@@ -55,7 +56,7 @@ const animalMap = {
     }, {});
     return animalByName;
   },
-  sex: (optionSex) => getAnimalByName(optionSex),
+  sex: (optionSex, sorted) => getAnimalByName(optionSex, sorted),
 };
 
 function getAnimalMap(options) {
@@ -63,12 +64,9 @@ function getAnimalMap(options) {
     return animalMap.noOptions();
   }
   if (options.includeNames) {
-    if (options.sex) return animalMap.sex(options.sex);
-    return animalMap.includeNames();
+    if (options.sex) return animalMap.sex(options.sex, options.sorted);
+    return animalMap.includeNames(options.sex, options.sorted);
   }
 }
 
 module.exports = getAnimalMap;
-
-// const options = { includeNames: true, sex: 'female' };
-// console.log(getAnimalMap(options));
