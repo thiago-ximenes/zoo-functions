@@ -13,36 +13,38 @@ const getJustLocation = () => {
 };
 
 const getLocation = (animalLocation) => {
-  const AnimalPerLocation = species.filter(
-    (specie) => specie.location === animalLocation
-  );
+  const AnimalPerLocation = species.filter((specie) => specie.location === animalLocation);
   return AnimalPerLocation;
 };
 
-const getAnimalName = (animalPerLocation) => {
-  return animalPerLocation.map((specie) => specie.name);
-};
+const getAnimalName = (animalPerLocation) => animalPerLocation.map((specie) => specie.name);
 
-const getResidentsBySpecie = (animalPerLocation, animalName) => {
-  const resident = animalPerLocation.find((specie) => animalName === specie.name);
+const getResidentsBySpecie = (animalPerLocation, animalName, option) => {
+  let resident = animalPerLocation.find((specie) => animalName === specie.name);
+  if (option) {
+    resident = resident.residents.filter((specieBySex) => specieBySex.sex === option);
+    return resident.map((specie) => specie.name);
+  }
   return resident.residents.map((residentName) => residentName.name);
 };
 
+const getAnimalByName = (option = false) => {
+  const justLocation = getJustLocation();
+  const animalByName = justLocation.reduce((accumulator, location) => {
+    const animalPerLocation = getLocation(location);
+    const name = getAnimalName(animalPerLocation);
+    const animalNames = name.map((animalName) => {
+      const residentsBySpecie = getResidentsBySpecie(animalPerLocation, animalName, option);
+      return { [animalName]: residentsBySpecie };
+    });
+    accumulator[location] = animalNames;
+    return accumulator;
+  }, {});
+  return animalByName;
+};
+
 const animalMap = {
-  includeNames: () => {
-    const justLocation = getJustLocation();
-    const animalByName = justLocation.reduce((accumulator, location) => {
-      const animalPerLocation = getLocation(location);
-      const name = getAnimalName(animalPerLocation);
-      const animalNames = name.map((animalName) => {
-        const residentsBySpecie = getResidentsBySpecie(animalPerLocation, animalName);
-        return { [animalName]: residentsBySpecie };
-      });
-      accumulator[location] = animalNames;
-      return accumulator;
-    }, {});
-    return animalByName;
-  },
+  includeNames: () => getAnimalByName(),
   noOptions: () => {
     const justLocation = getJustLocation();
     const animalByName = justLocation.reduce((accumulator, location) => {
@@ -53,6 +55,7 @@ const animalMap = {
     }, {});
     return animalByName;
   },
+  sex: (optionSex) => getAnimalByName(optionSex),
 };
 
 function getAnimalMap(options) {
@@ -60,17 +63,12 @@ function getAnimalMap(options) {
     return animalMap.noOptions();
   }
   if (options.includeNames) {
+    if (options.sex) return animalMap.sex(options.sex);
     return animalMap.includeNames();
   }
-  // const animal = species.reduce((accumulator, { location }) => {
-  //   const animalPerLocation = getLocation(location);
-  //   accumulator[location] = animalPerLocation;
-  //   return accumulator;
-  // }, {});
-  // return animal;
 }
 
 module.exports = getAnimalMap;
 
-const options = { includeNames: true, sex: 'female' };
-console.log(getAnimalMap(options));
+// const options = { includeNames: true, sex: 'female' };
+// console.log(getAnimalMap(options));
