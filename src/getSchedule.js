@@ -19,7 +19,7 @@ const getExhibitionAnimals = (day) => {
 const mondayClosed = { officeHour: 'CLOSED', exhibition: 'The zoo will be closed!' };
 
 const schedule = {
-  withoutParams: () => {
+  allDayAndAnimalsScheduled: () => {
     const result = Object.keys(hours).reduce((acc, curr) => {
       if (curr === 'Monday') acc[curr] = mondayClosed;
       else {
@@ -33,17 +33,15 @@ const schedule = {
     return result;
   },
   withDayParameter: (day) => {
-    const allDaysSchedule = schedule.withoutParams();
+    const allDaysSchedule = schedule.allDayAndAnimalsScheduled();
     return { [day]: allDaysSchedule[day] };
   },
 };
 
 function getSchedule(scheduleTarget) {
-  if (!Object.keys(hours).includes(scheduleTarget)) return schedule.withoutParams();
-  if (species.some((specie) => scheduleTarget === specie.name)) return schedule.withoutParams();
-  if (!scheduleTarget) return schedule.withoutParams();
   if (scheduleTarget === 'Monday') return { Monday: mondayClosed };
   if (Object.keys(hours).includes(scheduleTarget)) return schedule.withDayParameter(scheduleTarget);
+  return schedule.allDayAndAnimalsScheduled();
 }
 
 module.exports = getSchedule;
