@@ -37,6 +37,7 @@ function getEmployeesCoverage(employeeParameter) {
     const someFunction = (value) => value === employeeCoverage;
     return employee.id === employeeCoverage || fullNameSplitted.some(someFunction);
   });
+  if (!result) throw new Error('Informações inválidas');
   return result;
 }
 
