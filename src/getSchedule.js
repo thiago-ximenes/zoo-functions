@@ -36,14 +36,20 @@ const schedule = {
     const allDaysSchedule = schedule.allDayAndAnimalsScheduled();
     return { [day]: allDaysSchedule[day] };
   },
+  animalExhibition: (animalName) => {
+    const getAnimal = species.find((specie) => specie.name === animalName);
+    console.log(getAnimal);
+    return getAnimal.availability.map((animal) => animal);
+  },
 };
 
 function getSchedule(scheduleTarget) {
   if (scheduleTarget === 'Monday') return { Monday: mondayClosed };
   if (Object.keys(hours).includes(scheduleTarget)) return schedule.withDayParameter(scheduleTarget);
+  if (species.find((specie) => specie.name === scheduleTarget)) return schedule.animalExhibition(scheduleTarget);
   return schedule.allDayAndAnimalsScheduled();
 }
 
 module.exports = getSchedule;
 
-// console.log(schedule.withDayParameter('Tuesday'));
+console.log(getSchedule('lions'));
